@@ -17,4 +17,5 @@ module "high_availability_website" {
   name        = "${local.name}"
   image_id    = "${module.amis.ubuntu_bionic}"
   subnet_ids  = "${module.vpcs.subnet_ids_default}"
+  vpc_id      = "${module.vpcs.vpc_id_default}"
 }

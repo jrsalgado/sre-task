@@ -12,10 +12,10 @@ variable "name" {
   default = "webapp"
 }
 
-variable "subnet_ids" {
-  # type = "list"
-}
+variable "subnet_ids" {}
 
 variable "instance_type" {
   default = "t2.micro"
 }
+
+variable "vpc_id" { }
