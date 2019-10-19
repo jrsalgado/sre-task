@@ -2,3 +2,8 @@
 .terraform/
 tmp/
 ssh_keys
+*.tfstate
+*.tfstate.backup
+*.backup
+.terraform/
+*.retry
