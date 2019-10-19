@@ -16,6 +16,7 @@ module "high_availability_website" {
   environment = "${local.environment}"
   name        = "${local.name}"
   image_id    = "${module.amis.ubuntu_bionic}"
-  subnet_ids  = "${module.vpcs.subnet_ids_default}"
+  subnet_ids  = ["${module.vpcs.subnet_ids_default}"]
   vpc_id      = "${module.vpcs.vpc_id_default}"
+  cidr_blocks = ["${local.myIpCIDR}"]
 }

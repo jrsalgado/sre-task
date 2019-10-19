@@ -1,0 +1,26 @@
+---
+- hosts: local
+  tasks:
+    - name: Get my public IP
+      shell: |
+        #/bin/bash
+        set -e
+        curl -s http://checkip.amazonaws.com
+        exit 0
+      register: myIP
+    - debug:
+        msg: 
+        - "{{ myIP.stdout }}"
+        - "{{ playbook_dir }}"
+    - name: Terraform apply create environment
+      terraform:
+        project_path: '{{ playbook_dir }}/environments/develop'
+        variables:
+          myIp: "{{ myIP.stdout }}"
+        state: present
+        force_init: true
+      register: terra
+      check_mode: yes
+    - debug:
+        msg:
+        - "{{ terra }}"
