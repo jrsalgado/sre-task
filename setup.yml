@@ -8,19 +8,34 @@
         curl -s http://checkip.amazonaws.com
         exit 0
       register: myIP
+
     - debug:
         msg: 
         - "{{ myIP.stdout }}"
         - "{{ playbook_dir }}"
+    # TODO:( crate directory )
+    - name: Create key pair
+      shell: |
+        #/bin/bash
+        set -e
+        outputName="{{ playbook_dir }}/environments/{{ env }}/files/ssh_keys/id_rsa"
+        # create if do not exists
+        if [ ! -f "$outputName" ]
+        then
+          ssh-keygen -t rsa -f "$outputName" -q -N ""
+        fi
+        exit 0
+    # TODO:( validate exist file )
     - name: Terraform apply create environment
       terraform:
-        project_path: '{{ playbook_dir }}/environments/develop'
+        project_path: "{{ playbook_dir }}/environments/{{ env }}"
         variables:
           myIp: "{{ myIP.stdout }}"
         state: present
         force_init: true
       register: terra
       check_mode: yes
+
     - debug:
         msg:
         - "{{ terra }}"

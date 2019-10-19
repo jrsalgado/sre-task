@@ -2,6 +2,7 @@ resource "aws_launch_template" "webapp_lt" {
   name_prefix                          = "${var.environment}-${var.name}-"
   image_id                             = "${var.image_id}"
   instance_type                        = "${var.instance_type}"
+  key_name                             = "${var.key_name}"
   # user_data                          = "${data.template_cloudinit_config.user_data.rendered}"
   instance_initiated_shutdown_behavior = "terminate"
   ebs_optimized                        = false
@@ -20,7 +21,7 @@ resource "aws_autoscaling_group" "webapp_lc" {
   desired_capacity          = "${var.ag_size}"
   min_size                  = "${var.ag_size}"
 
-  health_check_type         = "ELB"
+  health_check_type         = "EC2"
   force_delete              = true
 
   launch_template {
