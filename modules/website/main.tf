@@ -7,14 +7,14 @@ resource "aws_launch_template" "webapp_lt" {
   instance_initiated_shutdown_behavior = "terminate"
   ebs_optimized                        = false
   network_interfaces {
-    associate_public_ip_address        = false
+    associate_public_ip_address        = true
     delete_on_termination              = true
     subnet_id                          = "${element(var.subnet_ids,0)}"
     security_groups                    = ["${aws_security_group.webapp_instance_sg.id}"]
   }
 }
 
-resource "aws_autoscaling_group" "webapp_lc" {
+resource "aws_autoscaling_group" "webapp_ag" {
   name                      = "${var.environment}-${var.name}-ag"
 
   max_size                  = "${var.ag_size}"
@@ -48,7 +48,8 @@ resource "aws_autoscaling_group" "webapp_lc" {
 resource "aws_security_group" "webapp_instance_sg" {
   name        = "${var.environment}-${var.name}-instance-sg"
   description = "Allow SSH inbound traffic"
-  vpc_id      = "${var.vpc_id}}"
+  # vpc_id      = "${var.vpc_id}}"
+  vpc_id = "vpc-792e0402"
 
   ingress {
     from_port   = 22

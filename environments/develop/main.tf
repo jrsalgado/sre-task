@@ -12,7 +12,7 @@ module "vpcs" {
 module "key_pair" {
   source = "../../modules/aws_key_pairs"
   name       = "${local.environment}-${local.name}-key"
-  public_key = "files/ssh_keys/id_rsa.pub"
+  public_key = "${file("files/ssh_keys/id_rsa.pub")}"
 }
 
 # High Alvailability Website
