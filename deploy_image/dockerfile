@@ -1,0 +1,13 @@
+FROM ubuntu:bionic
+# install ansible and terraform
+RUN apt update \
+    && apt install software-properties-common -y \
+    && apt-add-repository --yes --update ppa:ansible/ansible \
+    && apt install ansible wget unzip make -y \
+    && wget https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip \
+    && unzip terraform_0.11.14_linux_amd64.zip -d /usr/bin \
+    && mkdir -p /home/deployment
+
+RUN apt install curl -y
+
+WORKDIR /home/deployment
