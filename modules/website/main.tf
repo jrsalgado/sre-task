@@ -1,9 +1,28 @@
+data "template_cloudinit_config" "user_data" {
+  gzip          = false
+  base64_encode = true
+
+  # setup base
+  part {
+    filename     = "01_setup_firewall_ssh.sh"
+    content_type = "text/x-shellscript"
+    content      = "${file("../../common/scripts/setup_firewall_ssh.sh")}"
+  }
+
+  # setup webserver
+  part {
+    filename     = "02_setup_webserver.sh"
+    content_type = "text/x-shellscript"
+    content      = "${file("${path.module}/files/setup_webserver.sh")}"
+  }
+
+}
 resource "aws_launch_template" "webapp_lt" {
   name_prefix                          = "${var.environment}-${var.name}-"
   image_id                             = "${var.image_id}"
   instance_type                        = "${var.instance_type}"
   key_name                             = "${var.key_name}"
-  # user_data                          = "${data.template_cloudinit_config.user_data.rendered}"
+  user_data                            = "${data.template_cloudinit_config.user_data.rendered}"
   instance_initiated_shutdown_behavior = "terminate"
   ebs_optimized                        = false
   network_interfaces {
