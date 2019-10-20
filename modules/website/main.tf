@@ -67,8 +67,8 @@ resource "aws_autoscaling_group" "webapp_ag" {
 resource "aws_security_group" "webapp_instance_sg" {
   name        = "${var.environment}-${var.name}-instance-sg"
   description = "Allow SSH inbound traffic"
-  # vpc_id      = "${var.vpc_id}}"
-  vpc_id = "vpc-792e0402"
+  vpc_id      = "${var.vpc_id}"
+  # vpc_id = "vpc-792e0402"
 
   ingress {
     from_port   = 22
