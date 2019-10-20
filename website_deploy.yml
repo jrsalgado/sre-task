@@ -10,7 +10,7 @@
       register: myIP
     - debug:
         msg: 
-        - "{{ myIP.stdout }}"
+        # - "{{ myIP.stdout }}"
         - "{{ playbook_dir }}"
     - name: Creates directory
       file:
