@@ -34,7 +34,7 @@
         state: present
         force_init: true
       register: terra
-      # check_mode: yes
+      check_mode: yes
     - debug:
         msg:
         - "{{ terra }}"

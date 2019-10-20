@@ -18,7 +18,7 @@ module "key_pair" {
 # High Alvailability Website
 module "high_availability_website" {
   source      = "../../modules/website"
-  ag_size     = "1"
+  ag_size     = "2"
   environment = "${local.environment}"
   name        = "${local.name}"
   image_id    = "${module.amis.ubuntu_bionic}"

@@ -29,7 +29,10 @@ resource "aws_launch_template" "webapp_lt" {
     associate_public_ip_address        = true
     delete_on_termination              = true
     subnet_id                          = "${element(var.subnet_ids,0)}"
-    security_groups                    = ["${aws_security_group.webapp_instance_sg.id}"]
+    security_groups                    = [
+      "${aws_security_group.webapp_instance_sg.id}",
+      "${aws_security_group.allow_trafic_public_nodes.id}"
+      ]
   }
 }
 
@@ -86,4 +89,28 @@ resource "aws_security_group" "webapp_instance_sg" {
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
   }
+}
+
+
+resource "aws_security_group" "allow_trafic_public_nodes" {
+  name        = "${var.environment}-${var.name}-alb-instance"
+  description = "Allow ALB trafic to nodes"
+
+  vpc_id      = "${var.vpc_id}"
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Nginx HTTP node port"
+    from_port   = "80"
+    to_port     = "80"
+    protocol    = "tcp"
+    security_groups = [ "${aws_security_group.alb_webservers_sg.id}" ]
+  }
+
 }
