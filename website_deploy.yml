@@ -1,0 +1,59 @@
+---
+- hosts: local
+  tasks:
+    - name: Get my public IP
+      shell: |
+        #/bin/bash
+        set -e
+        curl -s http://checkip.amazonaws.com
+        exit 0
+      register: myIP
+    - debug:
+        msg: 
+        - "{{ myIP.stdout }}"
+        - "{{ playbook_dir }}"
+    - name: Creates directory
+      file:
+        path: "{{ playbook_dir }}/environments/{{ env }}/files/ssh_keys"
+        state: directory
+    - name: Create key pair
+      shell: |
+        #/bin/bash
+        set -e
+        outputName="{{ playbook_dir }}/environments/{{ env }}/files/ssh_keys/id_rsa"
+        # create if do not exists
+        if [ ! -f "$outputName" ]
+        then
+          ssh-keygen -f "$outputName" -q -N ""
+        fi
+        exit 0
+    - name: Terraform apply create environment
+      terraform:
+        project_path: "{{ playbook_dir }}/environments/{{ env }}"
+        variables:
+          myIp: "{{ myIP.stdout }}"
+        state: "{{ tearraform_state }}"
+        force_init: true
+      register: terra
+      check_mode: "{{ tearraform_plan }}"
+    - debug:
+        msg:
+        - "{{ terra }}"
+        - "{{ terra.outputs }}"
+# plan
+# ansible-playbook -i ./hosts website_deploy.yml
+
+# deploy
+# ansible-playbook -i ./hosts website_deploy.yml --extra-vars '{"tearraform_plan":"no"}'
+# Note: ALB some times takes longer than spected to finish provisioning and breaks the apply execution
+#       run the comand again to complete the deployment
+# After the deployment you will find the dns name on the bottom og the logs
+# "website_dns": {
+#     "sensitive": false,
+#     "type": "string",
+#     "value": "http://develop-nginx-ha-alb-1761420719.us-east-1.elb.amazonaws.com"
+# }
+
+
+# destroy
+# ansible-playbook -i ./hosts website_deploy.yml --extra-vars '{"tearraform_plan":"no","tearraform_state":"absent"}'

@@ -27,3 +27,7 @@ module "high_availability_website" {
   cidr_blocks = ["${local.myIpCIDR}"]
   key_name    = "${module.key_pair.key_name}"
 }
+
+output "website_dns" {
+  value = "http://${module.high_availability_website.website_dns}"
+}

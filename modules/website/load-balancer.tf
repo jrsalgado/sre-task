@@ -8,6 +8,10 @@ resource "aws_alb" "webserver_alb" {
     Name               = "${var.environment}-${var.name}-alb"
     Environment        = "${var.environment}"
   }
+
+  timeouts {
+    create = "20m"
+  }
 }
 
 resource "aws_security_group" "alb_webservers_sg" {
