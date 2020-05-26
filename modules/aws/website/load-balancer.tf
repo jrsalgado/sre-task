@@ -45,7 +45,7 @@ resource "aws_security_group" "alb_webservers_sg" {
 }
 
 resource "aws_autoscaling_attachment" "public_to_webserver" {
-  autoscaling_group_name = "${var.environment}-${var.name}-ag"
+  autoscaling_group_name = "${aws_autoscaling_group.webapp_ag.name}"
   alb_target_group_arn   = "${aws_alb_target_group.webserver_tg.arn}"
 }
 

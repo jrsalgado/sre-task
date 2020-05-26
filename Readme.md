@@ -6,7 +6,13 @@ This tool uses some infrastructure as code applications like **terraform** and *
 
 ## Prerequisites
 - AWS credentials
+- Default VPC
 - Docker installed
+
+#### Create a Default VPC
+Services > VPC > Your VPCs
+
+![Example](./common/tutorial/defaultVPC.png)
 
 ### 1- Create a AWS credentials file (.aws/credentials) under the root repository directory. Its spected that you have sufficient permissions on that AWS account to create EC2 instances, ALBs, Security Groups and lots of cool stuff.
 
@@ -28,7 +34,7 @@ cd sre-task/
 make docker-build
 
 # or without make
-docker build -t website-deploy:latest -f deploy_image/dockerfile .
+docker build -t website-deploy:latest -f docker/dockerfile .
 ```
 ![Example](./common/tutorial/build_docker_image.svg)
 

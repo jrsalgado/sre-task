@@ -21,9 +21,7 @@ sudo tee -a /var/www/html/index.nginx-debian.html >/dev/null <<EOF
   </style>
 </head>
 <body>
-  <textarea name="" id="myTextarea">
-    ${EC2IDENTITY}
-  </textarea>
+  <textarea name="" id="myTextarea" readonly>${EC2IDENTITY}</textarea>
 </body>
 </html>
 EOF

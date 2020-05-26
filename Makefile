@@ -1,14 +1,14 @@
 plan:
-	ansible-playbook -i ./hosts website_deploy.yml
+	ansible-playbook -i ./ansible/hosts ./ansible/main.yml
 
 deploy:
-	ansible-playbook -i ./hosts website_deploy.yml --extra-vars '{"tearraform_plan":"no"}'
+	ansible-playbook -i ./ansible/hosts ./ansible/main.yml --extra-vars '{"tearraform_plan":"no"}'
 
 destroy:
-	ansible-playbook -i ./hosts website_deploy.yml --extra-vars '{"tearraform_plan":"no","tearraform_state":"absent"}'
+	ansible-playbook -i ./ansible/hosts ./ansible/main.yml --extra-vars '{"tearraform_plan":"no","tearraform_state":"absent"}'
 
 docker-build:
-	docker build -t website-deploy:latest -f deploy_image/dockerfile .
+	docker build -t website-deploy:latest -f docker/dockerfile .
 
 docker-plan:
 	docker run -it --rm -v $(shell pwd):/home/deployment website-deploy:latest /bin/bash -c "make plan"

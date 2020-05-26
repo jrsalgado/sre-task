@@ -1,4 +1,3 @@
-
 data "aws_ami" "ubuntu_bionic" {
   most_recent      = true
   # Canonical oficial image
