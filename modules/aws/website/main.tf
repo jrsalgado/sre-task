@@ -71,7 +71,6 @@ resource "aws_security_group" "webapp_instance_sg" {
   name        = "${var.environment}-${var.name}-instance-sg"
   description = "Allow SSH inbound traffic"
   vpc_id      = "${var.vpc_id}"
-  # vpc_id = "vpc-792e0402"
 
   ingress {
     from_port   = 22
@@ -112,5 +111,4 @@ resource "aws_security_group" "allow_trafic_public_nodes" {
     protocol    = "tcp"
     security_groups = [ "${aws_security_group.alb_webservers_sg.id}" ]
   }
-
 }

@@ -1,23 +1,20 @@
-
-
-
 module "amis" {
-  source = "../../modules/aws_amis"
+  source = "../../modules/aws/amis"
 }
 
 module "vpcs" {
-  source = "../../modules/aws_vpcs"
+  source = "../../modules/aws/vpcs"
 }
 
 module "key_pair" {
-  source = "../../modules/aws_key_pairs"
+  source = "../../modules/aws/key_pairs"
   name       = "${local.environment}-${local.name}-key"
   public_key = "${file("files/ssh_keys/id_rsa.pub")}"
 }
 
 # High Alvailability Website
 module "high_availability_website" {
-  source      = "../../modules/website"
+  source      = "../../modules/aws/website"
   ag_size     = "2"
   environment = "${local.environment}"
   name        = "${local.name}"

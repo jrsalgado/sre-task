@@ -1,4 +1,3 @@
-
 output "vpc_id_default" {
   value = "${data.aws_vpc.default.id}"
 }
